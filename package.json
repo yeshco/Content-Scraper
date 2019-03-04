@@ -1,0 +1,16 @@
+{
+  "name": "content-scraper",
+  "version": "1.0.0",
+  "description": "A content Scraper for a teamtreehouse.com project.",
+  "main": "scraper.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Yeshaya Coffman",
+  "license": "ISC",
+  "dependencies": {
+    "csv": "^5.1.1",
+    "csv-string": "^3.1.5",
+    "scrape-it": "^5.1.4"
+  }
+}
