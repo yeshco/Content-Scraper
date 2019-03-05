@@ -24,10 +24,11 @@ function createFiles(homeDir, file, boolean, toDo) {
      toDo(returnPlace(homeDir, found), () => {
        if (err) throw err;
      })
-   } else if (boolean === false) {
-     //Calling the function to delete the .csv file each time
-      createFiles(`./data`, `.csv`, true, fs.unlink);
    }
+   // else if (boolean === false) {
+   //   //Calling the function to delete the .csv file each time
+   //
+   // }
  })
 };
 //Calling the function to create the data directory
@@ -46,6 +47,7 @@ createFiles(`./`, `data`, false, fs.mkdir);
       }
     }
   }).then(({ data, response }) => {
+      createFiles(`./data`, `.csv`, true, fs.unlink);
       let shirts = data.urls.length;
       let stringTitles = 'Title, Price, ImageURL, URL, Time\n'
       //Creating the file were the information is going to be stored
