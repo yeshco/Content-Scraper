@@ -4,7 +4,8 @@
   "description": "A content Scraper for a teamtreehouse.com project.",
   "main": "scraper.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node scraper.js"
   },
   "author": "Yeshaya Coffman",
   "license": "ISC",
