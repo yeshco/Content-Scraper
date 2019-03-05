@@ -1,4 +1,5 @@
 const fs = require('fs');
+const request = require('request');
 const scrapeIt = require ('scrape-it')
 const stringify = require('csv-stringify')
 const CSV = require('csv-string');
@@ -40,7 +41,6 @@ scrapeIt("http://shirts4mike.com/shirts.php", {
     }
   }
 }).then(({ data, response }) => {
-  console.log(errorMessageGenerator(response))
     let shirts = data.urls.length;
     let stringTitles = 'Title, Price, ImageURL, URL, Time\n'
     fs.appendFile(`./data/${dateOrTime(1)}.csv`, stringTitles , (err) => {
@@ -62,11 +62,13 @@ scrapeIt("http://shirts4mike.com/shirts.php", {
           fs.appendFile(`./data/${dateOrTime(1)}.csv`, stringData , (err) => {
             if (err) throw err;
           });
-
       });
     }
 }).catch((error) => {
-  console.log(error)
+  console.log(errorMessageGenerator(error));
+  fs.appendFile('./data/scraper-error.log', createErrorLog(error, ), (err) => {
+  if (err) throw err;
+});
 })
 
 
@@ -82,6 +84,12 @@ function dateOrTime(theSwitch) {
 }
 
 
-function errorMessageGenerator(response) {
-  return response;
+function errorMessageGenerator(error) {
+  return `The site you're trying to get to is not working (error: ${error.code})`;
+
+}
+
+function createErrorLog(error) {
+  var d = new Date();
+  return `[${d.toString()}] <${error.code}>`
 }
