@@ -24,9 +24,9 @@ function createFiles(homeDir, file, boolean, toDo) {
      toDo(returnPlace(homeDir, found), () => {
        if (err) throw err;
      })
-   } else if (boolean === false){
+   } else if (boolean === false) {
      //Calling the function to delete the .csv file each time
-     createFiles(`./data`, `.csv`, true, fs.unlink);
+      createFiles(`./data`, `.csv`, true, fs.unlink);
    }
  })
 };
@@ -35,51 +35,51 @@ createFiles(`./`, `data`, false, fs.mkdir);
 
 
 //Calling the main module to scrape the website
-scrapeIt("http://shirts4mike.com/shirts.php", {
-  urls: {
-    listItem: ".products li",
-    data: {
-      li: {
-        selector:"a",
-        attr: "href"
+  scrapeIt('http://shirts4mike.com/shirts.php', {
+    urls: {
+      listItem: ".products li",
+      data: {
+        li: {
+          selector:"a",
+          attr: "href"
+        }
       }
     }
-  }
-}).then(({ data, response }) => {
-    let shirts = data.urls.length;
-    let stringTitles = 'Title, Price, ImageURL, URL, Time\n'
-    //Creating the file were the information is going to be stored
-    fs.appendFile(`./data/${dateOrTime(1)}.csv`, stringTitles , (err) => {
-      if (err) throw err;
-    });
-    //Looking for each shirt on the website
-    for (let i=0; i<shirts; i++) {
-      let currentUrl = `http://shirts4mike.com/${data.urls[i].li}`
-      scrapeIt(currentUrl, {
-        title: "title",
-        price: ".shirt-details h1 .price",
-        imageUrl: {
-          selector: ".shirt-picture span img",
-          attr: "src"
-        }
-      }).then(({ data, response }) => {
-          data.Url = currentUrl;
-          data.time = dateOrTime(0);
-          let stringData = CSV.stringify(data);
-          //Adding each shirt information to the .csv file
-          fs.appendFile(`./data/${dateOrTime(1)}.csv`, stringData , (err) => {
-            if (err) throw err;
-          });
+  }).then(({ data, response }) => {
+      let shirts = data.urls.length;
+      let stringTitles = 'Title, Price, ImageURL, URL, Time\n'
+      //Creating the file were the information is going to be stored
+      fs.appendFile(`./data/${dateOrTime(1)}.csv`, stringTitles , (err) => {
+        if (err) throw err;
       });
-    }
-}).catch((error) => {
-  //Creating error message
-  console.log(errorMessageGenerator(error));
-  //Creating error file //Extra Credit\\
-  fs.appendFile('./data/scraper-error.log', createErrorLog(error, ), (err) => {
-  if (err) throw err;
-});
-})
+      //Looking for each shirt on the website
+      for (let i=0; i<shirts; i++) {
+        let currentUrl = `http://shirts4mike.com/${data.urls[i].li}`
+        scrapeIt(currentUrl, {
+          title: "title",
+          price: ".shirt-details h1 .price",
+          imageUrl: {
+            selector: ".shirt-picture span img",
+            attr: "src"
+          }
+        }).then(({ data, response }) => {
+            data.Url = currentUrl;
+            data.time = dateOrTime(0);
+            let stringData = CSV.stringify(data);
+            //Adding each shirt information to the .csv file
+            fs.appendFile(`./data/${dateOrTime(1)}.csv`, stringData , (err) => {
+              if (err) throw err;
+            });
+        });
+      }
+  }).catch((error) => {
+    //Creating error message
+    console.log(errorMessageGenerator(error));
+    //Creating error file //Extra Credit\\
+    fs.appendFile('./data/scraper-error.log', createErrorLog(error, ), (err) => {
+    if (err) throw err;
+  });
+  })
 
 //This function is called to get the current date or time
 function dateOrTime(theSwitch) {
@@ -102,5 +102,5 @@ function errorMessageGenerator(error) {
 //This function creates the timestamp for the error file //Extra Credit\\
 function createErrorLog(error) {
   var d = new Date();
-  return `[${d.toString()}] <${error.code}>`
+  return `[${d.toString()}] <${error.code}>  `
 }
